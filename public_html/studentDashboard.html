@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Absences</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Student Dashboard -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="images/ksuLogo.png" id="logo">
+                    <span>KSU-Attend</span>
+                </div>
+                <button class="sidebar-toggle" id="student-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <h3>Jane Doe</h3>
+                    <p>Student</p>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="studentDashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="student-profile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="student-inbox.html">
+                        <i class="fas fa-inbox"></i>
+                        <span>Inbox</span>
+                        <span class="notification-badge">3</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="student-absences.html">
+                        <i class="fas fa-user-clock"></i>
+                        <span>Absences</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Student Absences Page -->
+            <div class="content-page active">
+                <div class="page-header">
+                    <h1>Absences</h1>
+                </div>
+                <div class="absences-container">
+                    <div class="absences-summary">
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="summary-details">
+                                <h3>Total Attendance</h3>
+                                <p class="summary-value">92%</p>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <div class="summary-icon warning-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="summary-details">
+                                <h3>Absence Threshold</h3>
+                                <p class="summary-value">8% of 25%</p>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card">
+                            <div class="summary-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="summary-details">
+                                <h3>Late Arrivals</h3>
+                                <p class="summary-value">2</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absence-graph-container">
+                        <h3>Absence Visualization</h3>
+                        <div class="graph-filters">
+                            <select id="graph-view-selector">
+                                <option value="byMonth">By Month</option>
+                                <option value="byCourse">By Course</option>
+                            </select>
+                            <select id="graph-type-selector">
+                                <option value="bar">Bar Chart</option>
+                                <option value="line">Line Chart</option>
+                            </select>
+                        </div>
+                        <div class="graph-container">
+                            <canvas id="absenceChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="course-absences">
+                        <h3>Absences by Course</h3>
+                        <div class="course-absence-list">
+                            <div class="course-absence-item">
+                                <div class="course-info">
+                                    <h4>CS101 - Introduction to Computer Science</h4>
+                                    <div class="absence-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress progress-green" style="width: 5%"></div>
+                                        </div>
+                                        <div class="progress-labels">
+                                            <span>5% of 25% Absence Limit</span>
+                                            <span class="threshold-indicator">25%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absence-details">
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Absences:</span>
+                                        <span class="stat-value">1</span>
+                                    </div>
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Late:</span>
+                                        <span class="stat-value">0</span>
+                                    </div>
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Excused:</span>
+                                        <span class="stat-value">1</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="course-absence-item">
+                                <div class="course-info">
+                                    <h4>MATH201 - Calculus I</h4>
+                                    <div class="absence-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress progress-yellow" style="width: 10%"></div>
+                                        </div>
+                                        <div class="progress-labels">
+                                            <span>10% of 25% Absence Limit</span>
+                                            <span class="threshold-indicator">25%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absence-details">
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Absences:</span>
+                                        <span class="stat-value">2</span>
+                                    </div>
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Late:</span>
+                                        <span class="stat-value">1</span>
+                                    </div>
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Excused:</span>
+                                        <span class="stat-value">1</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="course-absence-item">
+                                <div class="course-info">
+                                    <h4>PHYS101 - Physics 101</h4>
+                                    <div class="absence-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress progress-red" style="width: 20%"></div>
+                                        </div>
+                                        <div class="progress-labels">
+                                            <span>20% of 25% Absence Limit</span>
+                                            <span class="threshold-indicator">25%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absence-details">
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Absences:</span>
+                                        <span class="stat-value">3</span>
+                                    </div>
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Late:</span>
+                                        <span class="stat-value">1</span>
+                                    </div>
+                                    <div class="absence-stat">
+                                        <span class="stat-label">Excused:</span>
+                                        <span class="stat-value">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absence-history">
+                        <h3>Absence History</h3>
+                        <div class="absence-table-container">
+                            <table class="absence-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Course</th>
+                                        <th>Status</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Apr 24, 2023</td>
+                                        <td>PHYS101</td>
+                                        <td><span class="status-absent">Absent</span></td>
+                                        <td>Illness</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Apr 18, 2023</td>
+                                        <td>MATH201</td>
+                                        <td><span class="status-late">Late</span></td>
+                                        <td>Transportation issue</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Apr 12, 2023</td>
+                                        <td>PHYS101</td>
+                                        <td><span class="status-excused">Excused</span></td>
+                                        <td>Medical appointment</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Apr 5, 2023</td>
+                                        <td>CS101</td>
+                                        <td><span class="status-excused">Excused</span></td>
+                                        <td>Family emergency</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mar 28, 2023</td>
+                                        <td>MATH201</td>
+                                        <td><span class="status-absent">Absent</span></td>
+                                        <td>Illness</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mar 15, 2023</td>
+                                        <td>PHYS101</td>
+                                        <td><span class="status-absent">Absent</span></td>
+                                        <td>Not provided</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        document.getElementById('student-sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        });
+        
+        // Initialize Chart.js
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart data
+            const monthlyData = {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [
+                    {
+                        label: 'Absences',
+                        data: [1, 0, 2, 3, 0],
+                        backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Late Arrivals',
+                        data: [0, 1, 0, 1, 0],
+                        backgroundColor: 'rgba(243, 156, 18, 0.7)',
+                        borderColor: 'rgba(243, 156, 18, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Excused',
+                        data: [0, 1, 1, 2, 0],
+                        backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                        borderColor: 'rgba(46, 204, 113, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+            
+            const courseData = {
+                labels: ['CS101', 'MATH201', 'PHYS101', 'ENG101', 'CHEM101'],
+                datasets: [
+                    {
+                        label: 'Absences',
+                        data: [1, 2, 3, 0, 0],
+                        backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Late Arrivals',
+                        data: [0, 1, 1, 0, 0],
+                        backgroundColor: 'rgba(243, 156, 18, 0.7)',
+                        borderColor: 'rgba(243, 156, 18, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Excused',
+                        data: [1, 1, 2, 0, 0],
+                        backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                        borderColor: 'rgba(46, 204, 113, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+            
+            // Create chart
+            const ctx = document.getElementById('absenceChart').getContext('2d');
+            let absenceChart = new Chart(ctx, {
+                type: 'bar',
+                data: monthlyData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Occurrences'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Handle view selector change
+            document.getElementById('graph-view-selector').addEventListener('change', function() {
+                const viewType = this.value;
+                const chartType = document.getElementById('graph-type-selector').value;
+                
+                if (viewType === 'byMonth') {
+                    absenceChart.data = monthlyData;
+                    absenceChart.options.scales.x.title.text = 'Month';
+                } else {
+                    absenceChart.data = courseData;
+                    absenceChart.options.scales.x.title.text = 'Course';
+                }
+                
+                absenceChart.update();
+            });
+            
+            // Handle chart type selector change
+            document.getElementById('graph-type-selector').addEventListener('change', function() {
+                const chartType = this.value;
+                absenceChart.config.type = chartType;
+                absenceChart.update();
+            });
+        });
+    </script>
+</body>
+</html>

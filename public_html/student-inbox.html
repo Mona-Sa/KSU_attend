@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Inbox</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Student Dashboard -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="images/ksuLogo.png" id="logo">
+                    <span>KSU-Attend</span>
+                </div>
+                <button class="sidebar-toggle" id="student-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <h3>Jane Doe</h3>
+                    <p>Student</p>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="studentDashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="student-profile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="student-inbox.html">
+                        <i class="fas fa-inbox"></i>
+                        <span>Inbox</span>
+                        <span class="notification-badge">3</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="student-absences.html">
+                        <i class="fas fa-user-clock"></i>
+                        <span>Absences</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Student Inbox Page -->
+            <div class="content-page active">
+                <div class="page-header">
+                    <h1>Inbox</h1>
+                </div>
+                <div class="inbox-container">
+                    <div class="inbox-tabs">
+                        <button class="inbox-tab active" data-tab="notifications">Notifications</button>
+                        <button class="inbox-tab" data-tab="surveys">Rescheduling Surveys</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="notifications-tab">
+                        <div class="notification-list">
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h3>Faculty Entered Classroom</h3>
+                                    <p>Dr. Smith has entered Room 101 for CS101 lecture.</p>
+                                    <span class="notification-time">Today, 09:02 AM</span>
+                                </div>
+                                <div class="notification-actions">
+                                    <button class="mark-read"><i class="fas fa-check"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-calendar-times"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h3>Lecture Canceled</h3>
+                                    <p>CHEM101 lecture for tomorrow (May 2) has been canceled due to faculty illness.</p>
+                                    <span class="notification-time">Today, 08:30 AM</span>
+                                </div>
+                                <div class="notification-actions">
+                                    <button class="mark-read"><i class="fas fa-check"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h3>Rescheduling Confirmed</h3>
+                                    <p>CS101 lecture has been rescheduled from Monday, May 8 to Wednesday, May 10 (13:00 - 14:30).</p>
+                                    <span class="notification-time">Yesterday, 15:45 PM</span>
+                                </div>
+                                <div class="notification-actions">
+                                    <button class="mark-read"><i class="fas fa-check"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h3>Attendance Insight</h3>
+                                    <p>You've attended all lectures this week! Keep up the good work!</p>
+                                    <span class="notification-time">Apr 28, 2023</span>
+                                </div>
+                                <div class="notification-actions">
+                                    <button class="delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h3>Assignment Reminder</h3>
+                                    <p>CS101 Assignment #3 is due in 5 days. Don't forget to submit!</p>
+                                    <span class="notification-time">Apr 27, 2023</span>
+                                </div>
+                                <div class="notification-actions">
+                                    <button class="delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="surveys-tab">
+                        <div class="survey-list">
+                            <div class="survey-item">
+                                <div class="survey-header">
+                                    <h3>CS101 Rescheduling Request</h3>
+                                    <span class="survey-status pending">Response Needed</span>
+                                </div>
+                                <div class="survey-details">
+                                    <p><strong>From:</strong> Monday, May 15, 2023 (09:00 - 10:30)</p>
+                                    <p><strong>To:</strong> Wednesday, May 17, 2023 (13:00 - 14:30)</p>
+                                    <p><strong>Reason:</strong> Faculty meeting conflict</p>
+                                    <p><strong>Faculty:</strong> Dr. Smith</p>
+                                </div>
+                                <div class="survey-actions">
+                                    <button class="accept-button">Accept</button>
+                                    <button class="reject-button">Reject</button>
+                                </div>
+                            </div>
+                            
+                            <div class="survey-item">
+                                <div class="survey-header">
+                                    <h3>PHYS101 Rescheduling Request</h3>
+                                    <span class="survey-status responded">Responded</span>
+                                </div>
+                                <div class="survey-details">
+                                    <p><strong>From:</strong> Friday, May 5, 2023 (14:00 - 15:30)</p>
+                                    <p><strong>To:</strong> Thursday, May 4, 2023 (15:30 - 17:00)</p>
+                                    <p><strong>Reason:</strong> Conference attendance</p>
+                                    <p><strong>Faculty:</strong> Dr. Williams</p>
+                                    <p><strong>Your Response:</strong> <span class="response-accept">Accepted</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        document.getElementById('student-sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        });
+        
+        // Inbox tabs
+        const inboxTabs = document.querySelectorAll('.inbox-tab');
+        inboxTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Hide all tabs
+                inboxTabs.forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // Show selected tab
+                this.classList.add('active');
+                
+                // Hide all tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show selected tab content
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // Mark notification as read
+        document.querySelectorAll('.mark-read').forEach(button => {
+            button.addEventListener('click', function() {
+                const notificationItem = this.closest('.notification-item');
+                notificationItem.classList.remove('unread');
+            });
+        });
+        
+        // Delete notification
+        document.querySelectorAll('.delete').forEach(button => {
+            button.addEventListener('click', function() {
+                const notificationItem = this.closest('.notification-item');
+                notificationItem.remove();
+            });
+        });
+        
+        // Survey actions
+        document.querySelectorAll('.accept-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const surveyItem = this.closest('.survey-item');
+                const surveyStatus = surveyItem.querySelector('.survey-status');
+                surveyStatus.textContent = 'Accepted';
+                surveyStatus.classList.remove('pending');
+                surveyStatus.classList.add('responded');
+                
+                const surveyActions = this.closest('.survey-actions');
+                surveyActions.innerHTML = '<p><strong>Your Response:</strong> <span class="response-accept">Accepted</span></p>';
+            });
+        });
+        
+        document.querySelectorAll('.reject-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const surveyItem = this.closest('.survey-item');
+                const surveyStatus = surveyItem.querySelector('.survey-status');
+                surveyStatus.textContent = 'Rejected';
+                surveyStatus.classList.remove('pending');
+                surveyStatus.classList.add('responded');
+                
+                const surveyActions = this.closest('.survey-actions');
+                surveyActions.innerHTML = '<p><strong>Your Response:</strong> <span class="response-reject">Rejected</span></p>';
+            });
+        });
+    </script>
+</body>
+</html>

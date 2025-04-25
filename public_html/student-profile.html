@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Student Dashboard -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="images/ksuLogo.png" id="logo">
+                    <span>KSU-Attend</span>
+                </div>
+                <button class="sidebar-toggle" id="student-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <h3>Jane Doe</h3>
+                    <p>Student</p>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="studentDashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="student-profile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="student-inbox.html">
+                        <i class="fas fa-inbox"></i>
+                        <span>Inbox</span>
+                        <span class="notification-badge">3</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="student-absences.html">
+                        <i class="fas fa-user-clock"></i>
+                        <span>Absences</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Student Profile Page -->
+            <div class="content-page active">
+                <div class="page-header">
+                    <h1>Profile</h1>
+                </div>
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h2>Jane Doe</h2>
+                            <p>Computer Science Major</p>
+                            <p>Student ID: S10001</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="profile-section">
+                            <h3>Personal Information</h3>
+                            <div class="profile-field">
+                                <label>Email:</label>
+                                <p>jane.doe@university.edu</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Phone:</label>
+                                <p>(555) 987-6543</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Address:</label>
+                                <p>123 Campus Drive, University Housing</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Date of Birth:</label>
+                                <p>January 15, 2002</p>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h3>Academic Information</h3>
+                            <div class="profile-field">
+                                <label>Major:</label>
+                                <p>Computer Science</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Year:</label>
+                                <p>Sophomore</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Advisor:</label>
+                                <p>Dr. Robert Johnson</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>GPA:</label>
+                                <p>3.8/4.0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        document.getElementById('student-sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        });
+    </script>
+</body>
+</html>
