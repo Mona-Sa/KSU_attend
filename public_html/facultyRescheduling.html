@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Rescheduling - KSU-Attend</title>
+    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    /* Dashboard Container */
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+  
+
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-header h1 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #6b7280;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .tab:hover {
+      color: #3b82f6;
+    }
+
+    .tab.active {
+      color: #3b82f6;
+      border-bottom-color: #3b82f6;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Card Styles */
+    .card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      background-color: #f9fafb;
+    }
+
+    .card-header h2 {
+      font-size: 18px;
+      color: #374151;
+      margin: 0;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: #3b82f6;
+      outline: none;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* Button Styles */
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: #3b82f6;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2563eb;
+    }
+
+    .btn-danger {
+      background-color: #ef4444;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+
+    .btn-secondary {
+      background-color: #6b7280;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background-color: #4b5563;
+    }
+
+    /* Message List */
+    .message-list {
+      margin-top: 20px;
+    }
+
+    .message-item {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .message-header {
+      padding: 15px;
+      background-color: #f9fafb;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .message-title {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .message-date {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .message-content {
+      padding: 15px;
+    }
+
+    .message-details {
+      margin-bottom: 10px;
+    }
+
+    .message-detail {
+      display: flex;
+      margin-bottom: 5px;
+    }
+
+    .message-detail-label {
+      width: 120px;
+      font-weight: 500;
+      color: #6b7280;
+    }
+
+    .message-detail-value {
+      color: #374151;
+    }
+
+    .message-text {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .message-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background-color: #f9fafb;
+      border-top: 1px solid #eee;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-pending {
+      background-color: #fef9c3;
+      color: #854d0e;
+    }
+
+    .status-completed {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .status-cancelled {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .response-rate {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress-bar {
+      width: 100px;
+      height: 8px;
+      background-color: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background-color: #3b82f6;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Student Response List */
+    .student-responses {
+      margin-top: 15px;
+    }
+
+    .student-response {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .student-response:last-child {
+      border-bottom: none;
+    }
+
+    .student-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .student-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .student-avatar i {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .student-name {
+      font-weight: 500;
+    }
+
+    .student-id {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .response-badge {
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .response-accepted {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .response-pending {
+      background-color: #fef9c3;
+      color: #854d0e;
+    }
+
+    .response-declined {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .dashboard-container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: sticky;
+        top: 0;
+      }
+
+      .sidebar.collapsed {
+        width: 100%;
+      }
+
+      .sidebar.collapsed .logo span,
+      .sidebar.collapsed .user-details,
+      .sidebar.collapsed .sidebar-menu li span,
+      .sidebar.collapsed .notification-badge {
+        display: block;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="images/ksuLogo.png" alt="KSU Logo" id="logo">
+          <span>KSU-Attend</span>
+        </div>
+        <button class="sidebar-toggle" id="faculty-sidebar-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="user-details">
+          <h3>Dr. Smith</h3>
+          <p>Faculty Member</p>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="facultyDashboard.html">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="facultyProfile.html">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="facultyAbsences.html">
+            <i class="fas fa-user-clock"></i>
+            <span>Student Absences</span>
+          </a>
+        </li>
+        <li class="active">
+          <a href="facultyRescheduling.html">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Rescheduling</span>
+          </a>
+        </li>
+        <li>
+          <a href="facultyReportIssue.html">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Report Issue</span>
+          </a>
+        </li>
+        <li>
+          <a href="index.html">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log Out</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="page-header">
+        <h1>Class Rescheduling</h1>
+        <div class="date">
+          <i class="fas fa-calendar"></i>
+          <span id="current-date">Monday, May 1, 2023</span>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="reschedule">Reschedule Class</div>
+        <div class="tab" data-tab="messages">Rescheduling Messages</div>
+      </div>
+
+      <!-- Reschedule Tab Content -->
+      <div class="tab-content active" id="reschedule-tab">
+        <div class="card">
+          <div class="card-header">
+            <h2>Reschedule a Class</h2>
+          </div>
+          <div class="card-content">
+            <form id="reschedule-form">
+              <div class="form-group">
+                <label for="course">Select Course</label>
+                <select class="form-control" id="course" required>
+                  <option value="">-- Select a course --</option>
+                  <option value="CS101">CS101 - Introduction to Computer Science</option>
+                  <option value="CS201">CS201 - Data Structures</option>
+                  <option value="CS301">CS301 - Database Systems</option>
+                  <option value="CS401">CS401 - Software Engineering</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="current-date">Current Date</label>
+                  <input type="date" class="form-control" id="current-date-input" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="new-date">New Date</label>
+                  <input type="date" class="form-control" id="new-date" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="current-time">Current Time</label>
+                  <input type="text" class="form-control" id="current-time" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="new-time">New Time</label>
+                  <select class="form-control" id="new-time" required>
+                    <option value="">-- Select a time slot --</option>
+                    <option value="08:00-09:30">08:00 - 09:30</option>
+                    <option value="09:30-11:00">09:30 - 11:00</option>
+                    <option value="11:00-12:30">11:00 - 12:30</option>
+                    <option value="12:30-14:00">12:30 - 14:00</option>
+                    <option value="14:00-15:30">14:00 - 15:30</option>
+                    <option value="15:30-17:00">15:30 - 17:00</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="current-room">Current Room</label>
+                  <input type="text" class="form-control" id="current-room" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="new-room">New Room</label>
+                  <select class="form-control" id="new-room" required>
+                    <option value="">-- Select a room --</option>
+                    <option value="Room 101">Room 101</option>
+                    <option value="Room 102">Room 102</option>
+                    <option value="Room 203">Room 203</option>
+                    <option value="Room 204">Room 204</option>
+                    <option value="Room 305">Room 305</option>
+                    <option value="Room 306">Room 306</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="reason">Reason for Rescheduling</label>
+                <textarea class="form-control" id="reason" rows="3" required></textarea>
+              </div>
+
+
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-danger" id="cancel-class-btn">Cancel Class</button>
+                <button type="submit" class="btn btn-primary">Reschedule & Notify Students</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages Tab Content -->
+      <div class="tab-content" id="messages-tab">
+        <div class="card">
+          <div class="card-header">
+            <h2>Rescheduling Messages</h2>
+          </div>
+          <div class="card-content">
+            <div class="message-list" id="message-list">
+              <!-- Message 1 -->
+              <div class="message-item">
+                <div class="message-header">
+                  <div class="message-title">CS101 - Introduction to Computer Science</div>
+                  <div class="message-date">April 28, 2023</div>
+                </div>
+                <div class="message-content">
+                  <div class="message-details">
+                    <div class="message-detail">
+                      <div class="message-detail-label">Original Schedule:</div>
+                      <div class="message-detail-value">May 2, 2023 | 09:00 - 10:30 | Room 101</div>
+                    </div>
+                    <div class="message-detail">
+                      <div class="message-detail-label">New Schedule:</div>
+                      <div class="message-detail-value">May 4, 2023 | 11:00 - 12:30 | Room 203</div>
+                    </div>
+                    <div class="message-detail">
+                      <div class="message-detail-label">Reason:</div>
+                      <div class="message-detail-value">Faculty meeting conflict</div>
+                    </div>
+                  </div>
+                
+                </div>
+                <div class="message-status">
+                  <span class="status-badge status-pending">Pending Responses</span>
+                  <div class="response-rate">
+                    <span>24/32 Accepted</span>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 75%"></div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="viewResponses('CS101-May2')">View Responses</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Message 2 -->
+              <div class="message-item">
+                <div class="message-header">
+                  <div class="message-title">CS301 - Database Systems</div>
+                  <div class="message-date">April 25, 2023</div>
+                </div>
+                <div class="message-content">
+                  <div class="message-details">
+                    <div class="message-detail">
+                      <div class="message-detail-label">Original Schedule:</div>
+                      <div class="message-detail-value">April 26, 2023 | 14:00 - 15:30 | Room 305</div>
+                    </div>
+                    <div class="message-detail">
+                      <div class="message-detail-label">New Schedule:</div>
+                      <div class="message-detail-value">April 28, 2023 | 14:00 - 15:30 | Room 305</div>
+                    </div>
+                    <div class="message-detail">
+                      <div class="message-detail-label">Reason:</div>
+                      <div class="message-detail-value">Personal emergency</div>
+                    </div>
+                  </div>
+           
+                </div>
+                <div class="message-status">
+                  <span class="status-badge status-completed">Completed</span>
+                  <div class="response-rate">
+                    <span>24/24 Accepted</span>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 100%"></div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="viewResponses('CS301-Apr26')">View Responses</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Message 3 -->
+              <div class="message-item">
+                <div class="message-header">
+                  <div class="message-title">CS201 - Data Structures</div>
+                  <div class="message-date">April 20, 2023</div>
+                </div>
+                <div class="message-content">
+                  <div class="message-details">
+                    <div class="message-detail">
+                      <div class="message-detail-label">Original Schedule:</div>
+                      <div class="message-detail-value">April 21, 2023 | 11:00 - 12:30 | Room 203</div>
+                    </div>
+                    <div class="message-detail">
+                      <div class="message-detail-label">Status:</div>
+                      <div class="message-detail-value">Cancelled</div>
+                    </div>
+                    <div class="message-detail">
+                      <div class="message-detail-label">Reason:</div>
+                      <div class="message-detail-value">University event</div>
+                    </div>
+                  </div>
+      
+                </div>
+                <div class="message-status">
+                  <span class="status-badge status-cancelled">Cancelled</span>
+                  <div class="response-rate">
+                    <span>28/28 Notified</span>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 100%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Responses Modal -->
+  <div class="modal" id="responses-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Student Responses</h2>
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="message-details">
+          <div class="message-detail">
+            <div class="message-detail-label">Course:</div>
+            <div class="message-detail-value" id="modal-course">CS101 - Introduction to Computer Science</div>
+          </div>
+          <div class="message-detail">
+            <div class="message-detail-label">Original Schedule:</div>
+            <div class="message-detail-value" id="modal-original">May 2, 2023 | 09:00 - 10:30 | Room 101</div>
+          </div>
+          <div class="message-detail">
+            <div class="message-detail-label">New Schedule:</div>
+            <div class="message-detail-value" id="modal-new">May 4, 2023 | 11:00 - 12:30 | Room 203</div>
+          </div>
+        </div>
+
+        <div class="student-responses" id="student-response-list">
+          <div class="student-response">
+            <div class="student-info">
+              <div class="student-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <div class="student-name">John Doe</div>
+                <div class="student-id">S12345</div>
+              </div>
+            </div>
+            <span class="response-badge response-accepted">Accepted</span>
+          </div>
+          <div class="student-response">
+            <div class="student-info">
+              <div class="student-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <div class="student-name">Jane Smith</div>
+                <div class="student-id">S12346</div>
+              </div>
+            </div>
+            <span class="response-badge response-accepted">Accepted</span>
+          </div>
+          <div class="student-response">
+            <div class="student-info">
+              <div class="student-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <div class="student-name">Bob Johnson</div>
+                <div class="student-id">S12347</div>
+              </div>
+            </div>
+            <span class="response-badge response-pending">Pending</span>
+          </div>
+          <div class="student-response">
+            <div class="student-info">
+              <div class="student-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div>
+                <div class="student-name">Alice Brown</div>
+                <div class="student-id">S12348</div>
+              </div>
+            </div>
+            <span class="response-badge response-declined">Declined</span>
+          </div>
+          <!-- More student responses would be dynamically added here -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn btn-primary" id="send-reminder-btn">Send Reminder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cancel Class Modal -->
+  <div class="modal" id="cancel-class-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Cancel Class</h2>
+        <button class="close-modal" onclick="closeCancelModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="cancel-course">Select Course</label>
+          <select class="form-control" id="cancel-course" required>
+            <option value="">-- Select a course --</option>
+            <option value="CS101">CS101 - Introduction to Computer Science</option>
+            <option value="CS201">CS201 - Data Structures</option>
+            <option value="CS301">CS301 - Database Systems</option>
+            <option value="CS401">CS401 - Software Engineering</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cancel-date">Class Date</label>
+          <input type="date" class="form-control" id="cancel-date" required>
+        </div>
+        <div class="form-group">
+          <label for="cancel-reason">Reason for Cancellation</label>
+          <textarea class="form-control" id="cancel-reason" rows="3" required></textarea>
+        </div>
+     
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeCancelModal()">Close</button>
+        <button class="btn btn-danger" id="confirm-cancel-btn">Cancel Class & Notify Students</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set current date
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    // Sidebar toggle
+    document.getElementById('faculty-sidebar-toggle').addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    });
+
+    // Highlight active page in sidebar
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPage = window.location.pathname.split('/').pop();
+      const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+
+      sidebarLinks.forEach(link => {
+        const parentLi = link.closest('li');
+        if (link.getAttribute('href') === currentPage) {
+          parentLi.classList.add('active');
+        } else {
+          parentLi.classList.remove('active');
+        }
+      });
+    });
+
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Hide all tab content
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        // Show the corresponding tab content
+        const tabId = tab.getAttribute('data-tab');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+      });
+    });
+
+    // Course selection change handler
+    document.getElementById('course').addEventListener('change', function() {
+      const courseId = this.value;
+      if (courseId) {
+        // In a real application, this would fetch the course details from a database
+        // For this demo, we'll use hardcoded values
+        const courseDetails = {
+          'CS101': {
+            time: '09:00 - 10:30',
+            room: 'Room 101',
+            date: '2023-05-02'
+          },
+          'CS201': {
+            time: '11:00 - 12:30',
+            room: 'Room 203',
+            date: '2023-05-02'
+          },
+          'CS301': {
+            time: '14:00 - 15:30',
+            room: 'Room 305',
+            date: '2023-05-03'
+          },
+          'CS401': {
+            time: '09:00 - 10:30',
+            room: 'Room 102',
+            date: '2023-05-04'
+          }
+        };
+
+        const details = courseDetails[courseId];
+        document.getElementById('current-time').value = details.time;
+        document.getElementById('current-room').value = details.room;
+        document.getElementById('current-date-input').value = details.date;
+      } else {
+        document.getElementById('current-time').value = '';
+        document.getElementById('current-room').value = '';
+        document.getElementById('current-date-input').value = '';
+      }
+    });
+
+    // Reschedule form submission
+    document.getElementById('reschedule-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const course = document.getElementById('course').value;
+      const newDate = document.getElementById('new-date').value;
+      const newTime = document.getElementById('new-time').value;
+      const newRoom = document.getElementById('new-room').value;
+      const reason = document.getElementById('reason').value;
+      const message = document.getElementById('message').value;
+      
+      // In a real application, this would send the data to a server
+      // For this demo, we'll just show a success message
+      alert(`Rescheduling request submitted for ${course}. Students will be notified.`);
+      
+      // Reset form
+      this.reset();
+      document.getElementById('current-time').value = '';
+      document.getElementById('current-room').value = '';
+      document.getElementById('current-date-input').value = '';
+      
+      // Switch to messages tab to show the new message
+      document.querySelector('[data-tab="messages"]').click();
+      
+      // In a real application, the new message would be added to the list
+      // For this demo, we'll just reload the page after a delay
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    });
+
+    // Cancel class button
+    document.getElementById('cancel-class-btn').addEventListener('click', function() {
+      // Get the selected course
+      const course = document.getElementById('course').value;
+      if (course) {
+        document.getElementById('cancel-course').value = course;
+        document.getElementById('cancel-date').value = document.getElementById('current-date-input').value;
+        
+        // Show cancel class modal
+        document.getElementById('cancel-class-modal').style.display = 'flex';
+      } else {
+        alert('Please select a course first.');
+      }
+    });
+
+    // Confirm cancel class button
+    document.getElementById('confirm-cancel-btn').addEventListener('click', function() {
+      const course = document.getElementById('cancel-course').value;
+      const date = document.getElementById('cancel-date').value;
+      const reason = document.getElementById('cancel-reason').value;
+      const message = document.getElementById('cancel-message').value;
+      
+      if (!course || !date || !reason || !message) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      
+      // In a real application, this would send the data to a server
+      // For this demo, we'll just show a success message
+      alert(`Class cancellation request submitted for ${course}. Students will be notified.`);
+      
+      // Close modal
+      closeCancelModal();
+      
+      // Switch to messages tab to show the new message
+      document.querySelector('[data-tab="messages"]').click();
+      
+      // In a real application, the new message would be added to the list
+      // For this demo, we'll just reload the page after a delay
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    });
+
+    // View student responses
+    function viewResponses(messageId) {
+      // In a real application, this would fetch the responses from a server
+      // For this demo, we'll use hardcoded values
+      const messageDetails = {
+        'CS101-May2': {
+          course: 'CS101 - Introduction to Computer Science',
+          original: 'May 2, 2023 | 09:00 - 10:30 | Room 101',
+          new: 'May 4, 2023 | 11:00 - 12:30 | Room 203'
+        },
+        'CS301-Apr26': {
+          course: 'CS301 - Database Systems',
+          original: 'April 26, 2023 | 14:00 - 15:30 | Room 305',
+          new: 'April 28, 2023 | 14:00 - 15:30 | Room 305'
+        }
+      };
+      
+      const details = messageDetails[messageId];
+      document.getElementById('modal-course').textContent = details.course;
+      document.getElementById('modal-original').textContent = details.original;
+      document.getElementById('modal-new').textContent = details.new;
+      
+      // Show modal
+      document.getElementById('responses-modal').style.display = 'flex';
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('responses-modal').style.display = 'none';
+    }
+
+    // Close cancel class modal
+    function closeCancelModal() {
+      document.getElementById('cancel-class-modal').style.display = 'none';
+      
+      // Reset form
+      document.getElementById('cancel-course').value = '';
+      document.getElementById('cancel-date').value = '';
+      document.getElementById('cancel-reason').value = '';
+      document.getElementById('cancel-message').value = '';
+    }
+
+    // Send reminder button
+    document.getElementById('send-reminder-btn').addEventListener('click', function() {
+      alert('Reminder sent to students with pending responses.');
+    });
+
+    // Close modals when clicking outside
+    window.onclick = function(event) {
+      const responsesModal = document.getElementById('responses-modal');
+      const cancelClassModal = document.getElementById('cancel-class-modal');
+      
+      if (event.target === responsesModal) {
+        closeModal();
+      }
+      
+      if (event.target === cancelClassModal) {
+        closeCancelModal();
+      }
+    };
+  </script>
+</body>
+</html>

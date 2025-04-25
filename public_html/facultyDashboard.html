@@ -11,35 +11,34 @@
 </head>
 <body>
   <div class="dashboard-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <i class="fas fa-university"></i>
-          <span>EduPlatform</span>
-        </div>
-        <button class="sidebar-toggle" onclick="toggleSidebar()">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-      <div class="user-info">
-        <div class="user-avatar">
-          <i class="fas fa-user"></i>
-        </div>
-        <div class="user-details">
-          <h3>Dr. Smith</h3>
-          <p>Faculty Member</p>
-        </div>
-      </div>
-      <ul class="sidebar-menu">
-        <li class="active"><i class="fas fa-home"></i><span>Home</span></li>
-        <li onclick="goToProfile()"><i class="fas fa-user"></i><span>Profile</span></li>
-        <li onclick="goToAbsences()"><i class=\"fas fa-user-clock\"></i><span>Student Absences</span></li>
-        <li onclick="goToRescheduling()"><i class=\"fas fa-calendar-alt\"></i><span>Rescheduling</span></li>
-        <li onclick="goToReportIssue()"><i class=\"fas fa-exclamation-circle\"></i><span>Report Issue</span></li>
-        <li onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></li>
-      </ul>
+  <div class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <img src="images/ksuLogo.png" id="logo">
+      <span>KSU-Attend</span>
     </div>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+  <div class="user-info">
+    <div class="user-avatar">
+      <i class="fas fa-user"></i>
+    </div>
+    <div class="user-details">
+      <h3>Dr. Smith</h3>
+      <p>Faculty Member</p>
+    </div>
+  </div>
+  <ul class="sidebar-menu">
+    <li><a href="facultyDashboard.html"><i class="fas fa-home"></i><span>Home</span></a></li>
+    <li><a href="facultyProfile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+    <li><a href="facultyAbsences.html"><i class="fas fa-user-clock"></i><span>Student Absences</span></a></li>
+    <li><a href="facultyRescheduling.html"><i class="fas fa-calendar-alt"></i><span>Rescheduling</span></a></li>
+    <li><a href="facultyReportIssue.html"><i class="fas fa-exclamation-circle"></i><span>Report Issue</span></a></li>
+    <li><a href="index.html"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li>
+  </ul>
+</div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -192,39 +191,64 @@
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
-    // Sidebar navigation
-    const menuItems = document.querySelectorAll('.sidebar-menu li');
-    menuItems.forEach(item => {
-      item.addEventListener('click', function() {
-        menuItems.forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        // Optional: You can link this to real page loading logic if desired
-      });
-    });
+    document.addEventListener('DOMContentLoaded', () => {
+  const currentPage = window.location.pathname.split('/').pop();
 
-    function toggleSidebar() {
+  const menuItems = document.querySelectorAll('.sidebar-menu li');
+  menuItems.forEach(li => {
+    const spanText = li.innerText.trim();
+    const page = li.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+    if (page === currentPage) {
+      li.classList.add('active');
+    } else {
+      li.classList.remove('active');
+    }
+  });
+});
+
+  function navigateTo(page) {
+    window.location.href = page;
+  }
+
+        function toggleSidebar() {
       document.querySelector('.sidebar').classList.toggle('collapsed');
     }
 
-    function logout() {
-  window.location.href = 'index.html';
-}
+    // Highlight active page in sidebar like student dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPage = window.location.pathname.split('/').pop();
+      const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
 
-function goToProfile() {
-  window.location.href = 'facultyProfile.html';
-}
+      sidebarLinks.forEach(link => {
+        const parentLi = link.closest('li');
+        if (link.getAttribute('href') === currentPage) {
+          parentLi.classList.add('active');
+        } else {
+          parentLi.classList.remove('active');
+        }
+      });
+    });
+    
+            function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    }
 
-function goToAbsences() {
-  window.location.href = 'facultyAbsences.html';
-}
+    // Highlight active page in sidebar like student dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPage = window.location.pathname.split('/').pop();
+      const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
 
-function goToRescheduling() {
-  window.location.href = 'facultyRescheduling.html';
-}
+      sidebarLinks.forEach(link => {
+        const parentLi = link.closest('li');
+        if (link.getAttribute('href') === currentPage) {
+          parentLi.classList.add('active');
+        } else {
+          parentLi.classList.remove('active');
+        }
+      });
+    });
 
-function goToReportIssue() {
-  window.location.href = 'facultyReportIssue.html';
-}
   </script>
 </body>
 </html>

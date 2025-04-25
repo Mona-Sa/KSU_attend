@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Absences - EduPlatform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    /* Dashboard Container */
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .page-header h1 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    /* Sections as single line divs */
+    .sections-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .section-row {
+      width: 100%;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-row:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .section-header {
+      min-width: 250px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .section-id {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .section-details {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .section-detail {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .section-detail i {
+      width: 20px;
+      margin-right: 8px;
+      color: #666;
+    }
+
+    .absence-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: auto;
+    }
+
+    .absence-low {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .absence-medium {
+      background-color: #fef9c3;
+      color: #854d0e;
+    }
+
+    .absence-high {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Back Button */
+    .back-button {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #e5e7eb;
+      color: #333;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background-color 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: #d1d5db;
+    }
+
+    /* Students Table */
+    .students-table-container {
+      display: none;
+    }
+
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .search-container {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-container i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 10px 8px 35px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .filter-select {
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      min-width: 150px;
+    }
+
+    .students-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .students-table th,
+    .students-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .students-table th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .students-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .students-table tr:hover {
+      background-color: #f9fafb;
+    }
+
+    /* Absence Level Highlighting - Updated ranges */
+    .absence-critical {
+      border-left: 4px solid #ef4444;
+      background-color: #fef2f2;
+    }
+
+    .absence-warning {
+      border-left: 4px solid #f59e0b;
+      background-color: #fffbeb;
+    }
+
+    .absence-normal {
+      border-left: 4px solid #3b82f6;
+      background-color: #eff6ff;
+    }
+
+    /* Legend */
+    .legend-container {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f9fafb;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .legend-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .legend-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
+
+    .legend-critical {
+      background-color: #ef4444;
+    }
+
+    .legend-warning {
+      background-color: #f59e0b;
+    }
+
+    .legend-normal {
+      background-color: #3b82f6;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+      padding: 4px 8px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .view-btn {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .view-btn:hover {
+      background-color: #bfdbfe;
+    }
+
+    .excuse-btn {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .excuse-btn:hover {
+      background-color: #bbf7d0;
+    }
+
+    .remove-btn {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .remove-btn:hover {
+      background-color: #fecaca;
+    }
+
+    /* Absence Details Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .absence-list {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .absence-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .absence-item:last-child {
+      border-bottom: none;
+    }
+
+    .absence-date {
+      font-weight: 500;
+    }
+
+    .absence-type {
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    .absence-type-absent {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .absence-type-late {
+      background-color: #fef9c3;
+      color: #854d0e;
+    }
+
+    .absence-type-excused {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .absence-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .dashboard-container {
+        flex-direction: column;
+      }
+
+  
+
+      .section-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .section-info {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      .section-details {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .absence-badge {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+
+      .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    
+     <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="images/ksuLogo.png" id="logo">
+                    <span>KSU-Attend</span>
+                </div>
+                <button class="sidebar-toggle" id="student-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+        <div class="user-details">
+          <h3>Dr. Smith</h3>
+          <p>Faculty Member</p>
+        </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="facultyDashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="facultyProfile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="facultyAbsences.html">
+                        <i class="fas fa-user-clock"></i>
+                        <span>Student Absences</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="facultyRescheduling.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Rescheduling</span>
+                    </a>
+                </li>
+                                <li>
+                    <a href="facultyReportIssue.html">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Report Issue</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="page-header">
+        <h1 id="page-title">Student Absences</h1>
+      </div>
+
+      <!-- Sections List -->
+      <div id="sections-list" class="absences-container">
+        <div class="sections-container">
+          <!-- Section 1 -->
+          <div class="section-row" onclick="showStudents('CS101', 'Introduction to Computer Science')">
+            <div class="section-info">
+              <div class="section-header">
+                <h3 class="section-title">Introduction to Computer Science</h3>
+                <p class="section-id">CS101</p>
+              </div>
+              <div class="section-details">
+                <div class="section-detail">
+                  <i class="fas fa-users"></i>
+                  <span>32 Students</span>
+                </div>
+                <div class="section-detail">
+                  <i class="fas fa-clock"></i>
+                  <span>Mon, Wed 10:00 - 11:30 AM</span>
+                </div>
+              </div>
+              <span class="absence-badge absence-low">Low Absence Rate</span>
+            </div>
+          </div>
+
+          <!-- Section 2 -->
+          <div class="section-row" onclick="showStudents('CS201', 'Data Structures and Algorithms')">
+            <div class="section-info">
+              <div class="section-header">
+                <h3 class="section-title">Data Structures and Algorithms</h3>
+                <p class="section-id">CS201</p>
+              </div>
+              <div class="section-details">
+                <div class="section-detail">
+                  <i class="fas fa-users"></i>
+                  <span>28 Students</span>
+                </div>
+                <div class="section-detail">
+                  <i class="fas fa-clock"></i>
+                  <span>Tue, Thu 1:00 - 2:30 PM</span>
+                </div>
+              </div>
+              <span class="absence-badge absence-medium">Medium Absence Rate</span>
+            </div>
+          </div>
+
+          <!-- Section 3 -->
+          <div class="section-row" onclick="showStudents('CS301', 'Database Systems')">
+            <div class="section-info">
+              <div class="section-header">
+                <h3 class="section-title">Database Systems</h3>
+                <p class="section-id">CS301</p>
+              </div>
+              <div class="section-details">
+                <div class="section-detail">
+                  <i class="fas fa-users"></i>
+                  <span>24 Students</span>
+                </div>
+                <div class="section-detail">
+                  <i class="fas fa-clock"></i>
+                  <span>Mon, Wed 2:00 - 3:30 PM</span>
+                </div>
+              </div>
+              <span class="absence-badge absence-high">High Absence Rate</span>
+            </div>
+          </div>
+
+          <!-- Section 4 -->
+          <div class="section-row" onclick="showStudents('CS401', 'Software Engineering')">
+            <div class="section-info">
+              <div class="section-header">
+                <h3 class="section-title">Software Engineering</h3>
+                <p class="section-id">CS401</p>
+              </div>
+              <div class="section-details">
+                <div class="section-detail">
+                  <i class="fas fa-users"></i>
+                  <span>20 Students</span>
+                </div>
+                <div class="section-detail">
+                  <i class="fas fa-clock"></i>
+                  <span>Tue, Thu 10:00 - 11:30 AM</span>
+                </div>
+              </div>
+              <span class="absence-badge absence-low">Low Absence Rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Students Table -->
+      <div id="students-table-container" class="students-table-container">
+        <button class="back-button" onclick="showSections()">
+          <i class="fas fa-arrow-left"></i> Back to Sections
+        </button>
+
+        <div class="filter-container">
+          <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" class="search-input" id="student-search" placeholder="Search students..." oninput="filterStudents()">
+          </div>
+          <select class="filter-select" id="absence-filter" onchange="filterStudents()">
+            <option value="all">All Students</option>
+            <option value="critical">Critical (≥20%)</option>
+            <option value="warning">Warning (15-19%)</option>
+            <option value="normal">Normal (10-14%)</option>
+            <option value="good">Good (<10%)</option>
+          </select>
+        </div>
+
+        <table class="students-table" id="students-table">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Absences</th>
+              <th>Percentage</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="students-table-body">
+            <!-- Student rows will be added dynamically -->
+          </tbody>
+        </table>
+
+        <div class="legend-container">
+          <h3 class="legend-title">Absence Level Legend:</h3>
+          <div class="legend-items">
+            <div class="legend-item">
+              <div class="legend-color legend-critical"></div>
+              <span>Critical (≥20%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color legend-warning"></div>
+              <span>Warning (15-19%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color legend-normal"></div>
+              <span>Normal (10-14%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Absence Details Modal -->
+  <div id="absence-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-student-name">Student Absences</h2>
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Student ID: <span id="modal-student-id"></span></p>
+        <p>Total Absences: <span id="modal-total-absences"></span></p>
+        <h3 class="mt-4 mb-2">Absence History:</h3>
+        <ul class="absence-list" id="absence-list">
+          <!-- Absence items will be added dynamically -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+        // Sidebar toggle
+        document.getElementById('student-sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        });
+
+
+    // Mock data for student absences
+    const studentAbsences = {
+      'CS101': [
+        { 
+          id: 'S12345', 
+          name: 'John Doe', 
+          absences: 1, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-10', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-15', type: 'late', status: 'unexcused' }
+          ]
+        },
+        { 
+          id: 'S12346', 
+          name: 'Jane Smith', 
+          absences: 2, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-15', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-20', type: 'absent', status: 'unexcused' }
+          ]
+        },
+        { 
+          id: 'S12347', 
+          name: 'Bob Johnson', 
+          absences: 3, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-18', type: 'absent', status: 'unexcused' },
+            { date: '2023-04-05', type: 'late', status: 'unexcused' },
+            { date: '2023-03-22', type: 'absent', status: 'unexcused' }
+          ]
+        },
+        { 
+          id: 'S12348', 
+          name: 'Alice Brown', 
+          absences: 4, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-20', type: 'absent', status: 'unexcused' },
+            { date: '2023-04-12', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-28', type: 'late', status: 'unexcused' },
+            { date: '2023-03-15', type: 'absent', status: 'unexcused' }
+          ]
+        },
+      ],
+      'CS201': [
+        { 
+          id: 'S12350', 
+          name: 'Eva Wilson', 
+          absences: 2, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-12', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-25', type: 'late', status: 'unexcused' }
+          ]
+        },
+        { 
+          id: 'S12351', 
+          name: 'Frank Miller', 
+          absences: 3, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-14', type: 'absent', status: 'unexcused' },
+            { date: '2023-04-01', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-18', type: 'late', status: 'unexcused' }
+          ]
+        },
+      ],
+      'CS301': [
+        { 
+          id: 'S12355', 
+          name: 'Jack Adams', 
+          absences: 3, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-11', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-28', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-14', type: 'late', status: 'unexcused' }
+          ]
+        },
+        { 
+          id: 'S12356', 
+          name: 'Karen White', 
+          absences: 4, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-16', type: 'absent', status: 'unexcused' },
+            { date: '2023-04-02', type: 'late', status: 'unexcused' },
+            { date: '2023-03-19', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-05', type: 'absent', status: 'unexcused' }
+          ]
+        },
+      ],
+      'CS401': [
+        { 
+          id: 'S12360', 
+          name: 'Olivia Scott', 
+          absences: 1, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-13', type: 'absent', status: 'unexcused' }
+          ]
+        },
+        { 
+          id: 'S12361', 
+          name: 'Peter Green', 
+          absences: 2, 
+          totalClasses: 15, 
+          absenceHistory: [
+            { date: '2023-04-15', type: 'absent', status: 'unexcused' },
+            { date: '2023-03-22', type: 'late', status: 'unexcused' }
+          ]
+        },
+      ],
+    };
+
+    let currentSection = '';
+    let currentSectionName = '';
+    let currentStudentId = '';
+
+    // Show sections list
+    function showSections() {
+      document.getElementById('sections-list').style.display = 'block';
+      document.getElementById('students-table-container').style.display = 'none';
+      document.getElementById('page-title').textContent = 'Student Absences';
+    }
+
+    // Show students table for a specific section
+    function showStudents(sectionId, sectionName) {
+      currentSection = sectionId;
+      currentSectionName = sectionName;
+      
+      document.getElementById('sections-list').style.display = 'none';
+      document.getElementById('students-table-container').style.display = 'block';
+      document.getElementById('page-title').textContent = `Student Absences - ${sectionName}`;
+      
+      // Reset filters
+      document.getElementById('student-search').value = '';
+      document.getElementById('absence-filter').value = 'all';
+      
+      // Populate table
+      populateStudentsTable(sectionId);
+    }
+
+    // Populate students table with data
+    function populateStudentsTable(sectionId) {
+      const tableBody = document.getElementById('students-table-body');
+      tableBody.innerHTML = '';
+      
+      const students = studentAbsences[sectionId] || [];
+      
+      students.forEach(student => {
+        const absencePercentage = (student.absences / student.totalClasses) * 100;
+        let rowClass = '';
+        
+        // Updated absence level thresholds
+        if (absencePercentage >= 20) {
+          rowClass = 'absence-critical';
+        } else if (absencePercentage >= 15) {
+          rowClass = 'absence-warning';
+        } else if (absencePercentage >= 10) {
+          rowClass = 'absence-normal';
+        }
+        
+        const row = document.createElement('tr');
+        row.className = rowClass;
+        row.dataset.percentage = absencePercentage;
+        row.dataset.studentId = student.id;
+        
+        row.innerHTML = `
+          <td>${student.id}</td>
+          <td>${student.name}</td>
+          <td>${student.absences}</td>
+          <td>${absencePercentage.toFixed(1)}%</td>
+          <td>
+            <button class="action-btn view-btn" onclick="showAbsenceDetails('${student.id}')">
+              <i class="fas fa-eye"></i> View Details
+            </button>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Filter students based on search and filter criteria
+    function filterStudents() {
+      const searchTerm = document.getElementById('student-search').value.toLowerCase();
+      const filterType = document.getElementById('absence-filter').value;
+      
+      const tableRows = document.querySelectorAll('#students-table-body tr');
+      
+      tableRows.forEach(row => {
+        const studentId = row.cells[0].textContent.toLowerCase();
+        const studentName = row.cells[1].textContent.toLowerCase();
+        const absencePercentage = parseFloat(row.dataset.percentage);
+        
+        const matchesSearch = studentId.includes(searchTerm) || studentName.includes(searchTerm);
+        
+        let matchesFilter = false;
+        if (filterType === 'all') {
+          matchesFilter = true;
+        } else if (filterType === 'critical' && absencePercentage >= 20) {
+          matchesFilter = true;
+        } else if (filterType === 'warning' && absencePercentage >= 15 && absencePercentage < 20) {
+          matchesFilter = true;
+        } else if (filterType === 'normal' && absencePercentage >= 10 && absencePercentage < 15) {
+          matchesFilter = true;
+        } else if (filterType === 'good' && absencePercentage < 10) {
+          matchesFilter = true;
+        }
+        
+        row.style.display = matchesSearch && matchesFilter ? '' : 'none';
+      });
+      
+      // Show "no results" message if needed
+      const visibleRows = document.querySelectorAll('#students-table-body tr:not([style*="display: none"])');
+      const tableBody = document.getElementById('students-table-body');
+      
+      if (visibleRows.length === 0) {
+        if (!document.getElementById('no-results-row')) {
+          const noResultsRow = document.createElement('tr');
+          noResultsRow.id = 'no-results-row';
+          noResultsRow.innerHTML = `
+            <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
+              No students found matching your criteria
+            </td>
+          `;
+          tableBody.appendChild(noResultsRow);
+        }
+      } else {
+        const noResultsRow = document.getElementById('no-results-row');
+        if (noResultsRow) {
+          noResultsRow.remove();
+        }
+      }
+    }
+
+    // Show absence details modal
+    function showAbsenceDetails(studentId) {
+      currentStudentId = studentId;
+      const student = findStudent(studentId);
+      
+      if (!student) return;
+      
+      document.getElementById('modal-student-name').textContent = `${student.name}'s Absences`;
+      document.getElementById('modal-student-id').textContent = student.id;
+      document.getElementById('modal-total-absences').textContent = `${student.absences} out of ${student.totalClasses} classes (${((student.absences / student.totalClasses) * 100).toFixed(1)}%)`;
+      
+      const absenceList = document.getElementById('absence-list');
+      absenceList.innerHTML = '';
+      
+      student.absenceHistory.forEach((absence, index) => {
+        const absenceItem = document.createElement('li');
+        absenceItem.className = 'absence-item';
+        absenceItem.dataset.index = index;
+        
+        const absenceTypeClass = absence.type === 'absent' ? 'absence-type-absent' : 'absence-type-late';
+        const absenceTypeText = absence.type === 'absent' ? 'Absent' : 'Late';
+        
+        absenceItem.innerHTML = `
+          <div>
+            <span class="absence-date">${absence.date}</span>
+            <span class="absence-type ${absenceTypeClass}">${absenceTypeText}</span>
+          </div>
+          <div class="absence-status">
+            ${absence.status === 'excused' ? 
+              '<span class="absence-type absence-type-excused">Excused</span>' : 
+              `<button class="action-btn excuse-btn" onclick="excuseAbsenceItem('${studentId}', ${index})">
+                <i class="fas fa-check"></i> Excuse
+              </button>
+              <button class="action-btn remove-btn" onclick="removeAbsenceItem('${studentId}', ${index})">
+                <i class="fas fa-times"></i> Remove
+              </button>`
+            }
+          </div>
+        `;
+        
+        absenceList.appendChild(absenceItem);
+      });
+      
+      document.getElementById('absence-modal').style.display = 'flex';
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('absence-modal').style.display = 'none';
+    }
+
+    // Find student by ID
+    function findStudent(studentId) {
+      const students = studentAbsences[currentSection] || [];
+      return students.find(student => student.id === studentId);
+    }
+
+    // Excuse a specific absence item
+    function excuseAbsenceItem(studentId, index) {
+      const student = findStudent(studentId);
+      if (!student || !student.absenceHistory[index]) return;
+      
+      student.absenceHistory[index].status = 'excused';
+      
+      // Recalculate total absences (only count unexcused)
+      student.absences = student.absenceHistory.filter(a => a.status === 'unexcused').length;
+      
+      // Update the modal and table
+      showAbsenceDetails(studentId);
+      populateStudentsTable(currentSection);
+    }
+
+    // Remove a specific absence item
+    function removeAbsenceItem(studentId, index) {
+      const student = findStudent(studentId);
+      if (!student || !student.absenceHistory[index]) return;
+      
+      if (confirm(`Are you sure you want to remove this absence record?`)) {
+        // Remove the specific absence
+        student.absenceHistory.splice(index, 1);
+        
+        // Recalculate total absences
+        student.absences = student.absenceHistory.filter(a => a.status === 'unexcused').length;
+        
+        // Update the modal and table
+        showAbsenceDetails(studentId);
+        populateStudentsTable(currentSection);
+      }
+    }
+
+    // Initialize with sections view
+    showSections();
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('absence-modal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+    
+        function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    }
+
+    // Highlight active page in sidebar like student dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPage = window.location.pathname.split('/').pop();
+      const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+
+      sidebarLinks.forEach(link => {
+        const parentLi = link.closest('li');
+        if (link.getAttribute('href') === currentPage) {
+          parentLi.classList.add('active');
+        } else {
+          parentLi.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,15 +1,161 @@
+<!-- facultyProfile.html -->
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/html.html to edit this template
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Profile - EduPlatform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="dashboard-container">
+ <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="images/ksuLogo.png" id="logo">
+                    <span>KSU-Attend</span>
+                </div>
+                <button class="sidebar-toggle" id="student-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+        <div class="user-details">
+          <h3>Dr. Smith</h3>
+          <p>Faculty Member</p>
+        </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="facultyDashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="facultyProfile.html">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="facultyAbsences.html">
+                        <i class="fas fa-user-clock"></i>
+                        <span>Student Absences</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="facultyRescheduling.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Rescheduling</span>
+                    </a>
+                </li>
+                  <li>
+                    <a href="facultyReportIssue.html">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Report Issue</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+    <div class="main-content">
+      <div class="page-header">
+        <h1>Profile</h1>
+        <a href="facultyDashboard.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+      </div>
+
+      <div class="profile-container">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="profile-info">
+            <h2>Dr. John Smith</h2>
+            <p>Professor of Computer Science</p>
+            <p>Faculty ID: F12345</p>
+          </div>
+        </div>
+
+        <div class="profile-details">
+          <div class="profile-section">
+            <h3>Personal Information</h3>
+            <div class="profile-field">
+              <label>Email:</label>
+              <p>john.smith@university.edu</p>
+            </div>
+            <div class="profile-field">
+              <label>Phone:</label>
+              <p>(555) 123-4567</p>
+            </div>
+            <div class="profile-field">
+              <label>Office:</label>
+              <p>Room 401, Computer Science Building</p>
+            </div>
+            <div class="profile-field">
+              <label>Department:</label>
+              <p>Computer Science</p>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+  </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const currentPage = window.location.pathname.split('/').pop();
+
+  const menuItems = document.querySelectorAll('.sidebar-menu li');
+  menuItems.forEach(li => {
+    const spanText = li.innerText.trim();
+    const page = li.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+
+    if (page === currentPage) {
+      li.classList.add('active');
+    } else {
+      li.classList.remove('active');
+    }
+  });
+});
+
+  function navigateTo(page) {
+    window.location.href = page;
+  }
+
+        function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    }
+
+    // Highlight active page in sidebar like student dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPage = window.location.pathname.split('/').pop();
+      const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+
+      sidebarLinks.forEach(link => {
+        const parentLi = link.closest('li');
+        if (link.getAttribute('href') === currentPage) {
+          parentLi.classList.add('active');
+        } else {
+          parentLi.classList.remove('active');
+        }
+      });
+    });
+</script>
+</body>
 </html>
