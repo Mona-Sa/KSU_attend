@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Login - EduPlatform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container" id="login-page">
+        <div class="login-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+
+            <div class="login-header">
+                <h1>Login</h1>
+                <p>Login as Faculty Member</p>
+            </div>
+
+            <form class="login-form" onsubmit="handleFacultyLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="login-button">Login</button>
+                </div>
+
+                <div class="form-footer">
+                    <a href="#">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function handleFacultyLogin(event) {
+            event.preventDefault();
+            // هنا يمكنك إضافة تحقق حقيقي من قاعدة بيانات أو ملف PHP
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === "faculty" && password === "1234") {
+                window.location.href = "facultyDashboard.html";
+            } else {
+                alert("Invalid username or password.");
+            }
+        }
+    </script>
+</body>
+</html>

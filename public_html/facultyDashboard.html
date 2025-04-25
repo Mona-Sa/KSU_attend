@@ -1,0 +1,230 @@
+<!-- facultyDashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Dashboard - EduPlatform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-university"></i>
+          <span>EduPlatform</span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="user-details">
+          <h3>Dr. Smith</h3>
+          <p>Faculty Member</p>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="active"><i class="fas fa-home"></i><span>Home</span></li>
+        <li onclick="goToProfile()"><i class="fas fa-user"></i><span>Profile</span></li>
+        <li onclick="goToAbsences()"><i class=\"fas fa-user-clock\"></i><span>Student Absences</span></li>
+        <li onclick="goToRescheduling()"><i class=\"fas fa-calendar-alt\"></i><span>Rescheduling</span></li>
+        <li onclick="goToReportIssue()"><i class=\"fas fa-exclamation-circle\"></i><span>Report Issue</span></li>
+        <li onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="content-page active" id="faculty-home">
+        <div class="page-header">
+          <h1>Dashboard</h1>
+          <div class="date">
+            <i class="fas fa-calendar"></i>
+            <span id="current-date">Monday, May 1, 2023</span>
+          </div>
+        </div>
+
+        <div class="dashboard-cards">
+          <div class="card">
+            <div class="card-header">
+              <h2>Today's Lectures</h2>
+            </div>
+            <div class="card-content">
+              <div class="lecture-item">
+                <div class="lecture-time">09:00 - 10:30</div>
+                <div class="lecture-details">
+                  <h3>Introduction to Computer Science</h3>
+                  <p>Room 101 • CS101</p>
+                </div>
+              </div>
+              <div class="lecture-item">
+                <div class="lecture-time">11:00 - 12:30</div>
+                <div class="lecture-details">
+                  <h3>Data Structures</h3>
+                  <p>Room 203 • CS201</p>
+                </div>
+              </div>
+              <div class="lecture-item">
+                <div class="lecture-time">14:00 - 15:30</div>
+                <div class="lecture-details">
+                  <h3>Database Systems</h3>
+                  <p>Room 305 • CS301</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Important Information</h2>
+            </div>
+            <div class="card-content">
+              <div class="info-item">
+                <i class="fas fa-info-circle"></i>
+                <p>Faculty meeting scheduled for Wednesday at 4 PM</p>
+              </div>
+              <div class="info-item">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Room 203 projector maintenance on Thursday</p>
+              </div>
+              <div class="info-item">
+                <i class="fas fa-bell"></i>
+                <p>Grade submission deadline: May 15, 2023</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="weekly-schedule">
+          <div class="section-header">
+            <h2>Weekly Schedule</h2>
+          </div>
+          <div class="schedule-container">
+            <div class="schedule-days">
+              <div class="day-header">Monday</div>
+              <div class="day-header">Tuesday</div>
+              <div class="day-header">Wednesday</div>
+              <div class="day-header">Thursday</div>
+              <div class="day-header">Friday</div>
+            </div>
+            <div class="schedule-grid">
+              <div class="schedule-day">
+                <div class="schedule-item cs101">
+                  <h4>CS101</h4>
+                  <p>09:00 - 10:30</p>
+                  <p>Room 101</p>
+                </div>
+                <div class="schedule-item cs201">
+                  <h4>CS201</h4>
+                  <p>11:00 - 12:30</p>
+                  <p>Room 203</p>
+                </div>
+                <div class="schedule-item cs301">
+                  <h4>CS301</h4>
+                  <p>14:00 - 15:30</p>
+                  <p>Room 305</p>
+                </div>
+              </div>
+              <div class="schedule-day">
+                <div class="schedule-item cs102">
+                  <h4>CS102</h4>
+                  <p>09:00 - 10:30</p>
+                  <p>Room 102</p>
+                </div>
+                <div class="schedule-item cs202">
+                  <h4>CS202</h4>
+                  <p>13:00 - 14:30</p>
+                  <p>Room 204</p>
+                </div>
+              </div>
+              <div class="schedule-day">
+                <div class="schedule-item cs101">
+                  <h4>CS101</h4>
+                  <p>09:00 - 10:30</p>
+                  <p>Room 101</p>
+                </div>
+                <div class="schedule-item cs301">
+                  <h4>CS301</h4>
+                  <p>14:00 - 15:30</p>
+                  <p>Room 305</p>
+                </div>
+              </div>
+              <div class="schedule-day">
+                <div class="schedule-item cs102">
+                  <h4>CS102</h4>
+                  <p>09:00 - 10:30</p>
+                  <p>Room 102</p>
+                </div>
+                <div class="schedule-item cs202">
+                  <h4>CS202</h4>
+                  <p>13:00 - 14:30</p>
+                  <p>Room 204</p>
+                </div>
+              </div>
+              <div class="schedule-day">
+                <div class="schedule-item cs201">
+                  <h4>CS201</h4>
+                  <p>11:00 - 12:30</p>
+                  <p>Room 203</p>
+                </div>
+                <div class="schedule-item office-hours">
+                  <h4>Office Hours</h4>
+                  <p>14:00 - 16:00</p>
+                  <p>Room 401</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    // Sidebar navigation
+    const menuItems = document.querySelectorAll('.sidebar-menu li');
+    menuItems.forEach(item => {
+      item.addEventListener('click', function() {
+        menuItems.forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+        // Optional: You can link this to real page loading logic if desired
+      });
+    });
+
+    function toggleSidebar() {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    }
+
+    function logout() {
+  window.location.href = 'index.html';
+}
+
+function goToProfile() {
+  window.location.href = 'facultyProfile.html';
+}
+
+function goToAbsences() {
+  window.location.href = 'facultyAbsences.html';
+}
+
+function goToRescheduling() {
+  window.location.href = 'facultyRescheduling.html';
+}
+
+function goToReportIssue() {
+  window.location.href = 'facultyReportIssue.html';
+}
+  </script>
+</body>
+</html>
